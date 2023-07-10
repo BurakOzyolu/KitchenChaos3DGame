@@ -9,10 +9,13 @@ public class Player : MonoBehaviour
     [SerializeField] float rotateSpeed;
     [SerializeField] GameInput gameInput;
     bool isWalking;
+    private Vector3 lastInteraction;
+    [SerializeField] LayerMask countersLayermask;
+
 
     void Start()
     {
-
+        
     }
 
     void Update()
@@ -71,10 +74,23 @@ public class Player : MonoBehaviour
 
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
 
-        float interactDistance = 2f;
-        if (Physics.Raycast(transform.position,moveDir,out RaycastHit rayCastHit, interactDistance))
+        if (moveDir != Vector3.zero)
         {
-            Debug.Log(rayCastHit.transform);
+            lastInteraction = moveDir;
+        }
+
+        float interactDistance = 2f;
+        //RaycastHit : Raycast'e çarpan objeyi temsil eder
+        //interactDistance : Raycast' etkileþim için gereken uzunluk
+        //lastInteraction : Objenin hangi yönde olduðunu belirtir.
+        //countersLayermask : Etkileþime geçen objeinin layerini temsil eder.
+
+        if (Physics.Raycast(transform.position, lastInteraction, out RaycastHit rayCastHit, interactDistance, countersLayermask))
+        {
+            if (rayCastHit.transform.TryGetComponent(out ClearCounter clearCounter))
+            {
+                Debug.Log("Interact");
+            }
         }
         else
         {
