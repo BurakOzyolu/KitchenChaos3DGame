@@ -19,7 +19,6 @@ public class PlayerAnimator : MonoBehaviour
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         animator.SetBool(IS_WALKING, player.IsWalking());

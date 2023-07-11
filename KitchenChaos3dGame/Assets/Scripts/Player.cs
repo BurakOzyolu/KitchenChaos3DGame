@@ -1,28 +1,62 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+
 public class Player : MonoBehaviour
 {
+    public static Player Instance { get; private set; }
+
+    public event EventHandler<OnSelectedCounterChangeEventArg> OnSelectedCounterChangeEvent;
+
+    public class OnSelectedCounterChangeEventArg : EventArgs
+    {
+        public ClearCounter selectedCounter;
+    }
+
     [SerializeField] float moveSpeed;
     [SerializeField] float rotateSpeed;
     [SerializeField] GameInput gameInput;
     bool isWalking;
     private Vector3 lastInteraction;
     [SerializeField] LayerMask countersLayermask;
+    private ClearCounter selectedCounter;
+    //(Ctrl + R + R) bir deðiþkeni bu class içerisinde deðiþtirilmesini saðlar.
 
-
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Debug.Log("There is more than one Player instance");
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
     void Start()
     {
-        
+        gameInput.OnInteractAction += GameInputOnInteraction;
     }
+
+    
 
     void Update()
     {
         HandleMovement();
         HandleInteractions();
     }
+
+    private void GameInputOnInteraction(object sender, EventArgs e)
+    {
+          if (selectedCounter !=null)
+          {
+              selectedCounter.Interact();
+          }
+    }
+
     private void HandleMovement()
     {
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
@@ -85,22 +119,39 @@ public class Player : MonoBehaviour
         //lastInteraction : Objenin hangi yönde olduðunu belirtir.
         //countersLayermask : Etkileþime geçen objeinin layerini temsil eder.
 
+
         if (Physics.Raycast(transform.position, lastInteraction, out RaycastHit rayCastHit, interactDistance, countersLayermask))
         {
             if (rayCastHit.transform.TryGetComponent(out ClearCounter clearCounter))
             {
-                Debug.Log("Interact");
+                if (clearCounter != selectedCounter)
+                {
+                    SetSelectedCounter(clearCounter);
+                }
+            }
+            else
+            {
+                SetSelectedCounter(null);
             }
         }
         else
         {
-            Debug.Log("-");
+            SetSelectedCounter(null);
         }
     }
 
     public bool IsWalking()
     {
         return isWalking;
+    }
+
+    private void SetSelectedCounter(ClearCounter selectedCounter)
+    {
+        this.selectedCounter = selectedCounter;
+        OnSelectedCounterChangeEvent?.Invoke(this, new OnSelectedCounterChangeEventArg
+        {
+            selectedCounter = selectedCounter
+        });
     }
 }
 
