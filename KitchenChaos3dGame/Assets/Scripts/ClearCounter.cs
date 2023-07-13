@@ -2,14 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClearCounter : MonoBehaviour
+public class ClearCounter : MonoBehaviour, IKitchenObjectParent
 {
-    [SerializeField] KitchenObjectSO KitchenObjectSO;
+    [SerializeField] KitchenObjectSO kitchenObjectSO;
     [SerializeField] Transform counterTopPoint;
 
     [SerializeField] KitchenObject kitchenObject;
-    [SerializeField] ClearCounter secondClearCounter;
-    [SerializeField] bool testing;
+
     void Start()
     {
         
@@ -17,25 +16,19 @@ public class ClearCounter : MonoBehaviour
 
     void Update()
     {
-        if (testing && Input.GetKeyDown(KeyCode.T))
-        {
-            if (kitchenObject != null)
-            {
-                kitchenObject.SetClearCounter(secondClearCounter);
-            }
-        }
+
     }
 
-    public void Interact ()
+    public void Interact(Player player)
     {
         if (kitchenObject == null)
         {
-            Transform kitchenObject = Instantiate(KitchenObjectSO.prefab, counterTopPoint);
-            kitchenObject.GetComponent<KitchenObject>().SetClearCounter(this);
+            Transform kitchenObjectTransform = Instantiate(kitchenObjectSO.prefab, counterTopPoint);
+            kitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(this);
         }
         else
         {
-            Debug.Log(kitchenObject.GetClearCounter());
+            kitchenObject.SetKitchenObjectParent(player);
         }
 
     }
@@ -44,18 +37,17 @@ public class ClearCounter : MonoBehaviour
     {
         return counterTopPoint;
     }
-
     public void SetKitchenObject(KitchenObject kitchenObject)
     {
         this.kitchenObject = kitchenObject;
     }
     public KitchenObject GetKitchenObject() 
     {
-        return this.kitchenObject;
+        return kitchenObject;
     }
     public void ClearKitchenObject()
     {
-        this.kitchenObject = null;
+        kitchenObject = null;
     }
     public bool HasKitchenObject()
     {

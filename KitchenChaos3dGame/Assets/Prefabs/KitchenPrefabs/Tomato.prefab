@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   kitchenObjectSO: {fileID: 11400000, guid: 77aa6ca27db0d2a429c8f8a77342fb25, type: 2}
+  clearCounter: {fileID: 0}
 --- !u!1001 &2406408796385268508
 PrefabInstance:
   m_ObjectHideFlags: 0

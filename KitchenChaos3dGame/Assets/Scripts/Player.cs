@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IKitchenObjectParent
 {
     public static Player Instance { get; private set; }
 
@@ -24,6 +24,10 @@ public class Player : MonoBehaviour
     [SerializeField] LayerMask countersLayermask;
     private ClearCounter selectedCounter;
     //(Ctrl + R + R) bir deðiþkeni bu class içerisinde deðiþtirilmesini saðlar.
+
+    [SerializeField] Transform kitchenObjectHoldPoint;
+
+    [SerializeField] KitchenObject kitchenObject;
 
     private void Awake()
     {
@@ -53,7 +57,7 @@ public class Player : MonoBehaviour
     {
           if (selectedCounter !=null)
           {
-              selectedCounter.Interact();
+              selectedCounter.Interact(this);
           }
     }
 
@@ -152,6 +156,28 @@ public class Player : MonoBehaviour
         {
             selectedCounter = selectedCounter
         });
+    }
+
+    public Transform GetKitchenObjectFollowTransform()
+    {
+        return kitchenObjectHoldPoint;
+    }
+
+    public void SetKitchenObject(KitchenObject kitchenObject)
+    {
+        this.kitchenObject = kitchenObject;
+    }
+    public KitchenObject GetKitchenObject()
+    {
+        return kitchenObject;
+    }
+    public void ClearKitchenObject()
+    {
+        kitchenObject = null;
+    }
+    public bool HasKitchenObject()
+    {
+        return kitchenObject != null;
     }
 }
 
