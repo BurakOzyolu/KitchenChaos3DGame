@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.InputSystem;
 
 public class GameInput : MonoBehaviour
 {
     public event EventHandler OnInteractAction; 
     private PlayerInputActions playerInputActions;
+    public event EventHandler OnInteractAlternateAction;
 
     private void Awake()
     {
@@ -14,6 +16,8 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.Enable();
 
         playerInputActions.Player.Intract.performed += Interact_performed;
+        playerInputActions.Player.InteractAlternate.performed += InteractAlternate_performed;
+
         //1- Kullanýcý "E" tuþuna basdýðý zaman burada Interact_Performed() metodu tetiklenecek.
         //2- Bu metod OnInteractAction?.Invoke(this, EventArgs.Empty) ile ilgili eventi tetikler.
         //3- OnInteractAction referansý kullananan bütün metodlar bu event tetiklendiðinde çalýþacaktýr.
@@ -27,6 +31,12 @@ public class GameInput : MonoBehaviour
         //Action: Herhangi bir deðer dönmeyen void.
 
     }
+
+    private void InteractAlternate_performed(InputAction.CallbackContext obj)
+    {
+        OnInteractAlternateAction?.Invoke(this, EventArgs.Empty);
+    }
+
     private void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         OnInteractAction?.Invoke(this, EventArgs.Empty);

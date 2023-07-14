@@ -32,13 +32,9 @@ public class KitchenObject : MonoBehaviour
 
     public IKitchenObjectParent GetKitchenObjectParent() { return kitchenObjectParent; }
 
-    void Start()
+    public void DestroySelf()
     {
-        
-    }
-
-    void Update()
-    {
-        
+        kitchenObjectParent.ClearKitchenObject();
+        Destroy(gameObject);
     }
 }
