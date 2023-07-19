@@ -51,6 +51,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         if (selectedCounter != null)
         {
             selectedCounter.InteractAlternate(this);
+            transform.LookAt(selectedCounter.transform);
         }
     }
 
@@ -67,7 +68,8 @@ public class Player : MonoBehaviour, IKitchenObjectParent
           if (selectedCounter !=null)
           {
               selectedCounter.Interact(this);
-          }
+              transform.LookAt(selectedCounter.transform);
+        }
     }
 
     private void HandleMovement()
