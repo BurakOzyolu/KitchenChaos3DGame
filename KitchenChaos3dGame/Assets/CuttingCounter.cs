@@ -49,6 +49,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
                         GetKitchenObject().DestroySelf();
                     }
                 }
+               
             }
             else
             {
