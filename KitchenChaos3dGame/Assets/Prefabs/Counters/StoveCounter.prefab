@@ -123,6 +123,11 @@ PrefabInstance:
       propertyPath: hasProgressGameObject
       value: 
       objectReference: {fileID: 2642420777514998154}
+    - target: {fileID: 7397251142976948442, guid: ee48fb809f4811d48a7227782aefeeb4,
+        type: 3}
+      propertyPath: mode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8111937808019429820, guid: ee48fb809f4811d48a7227782aefeeb4,
         type: 3}
       propertyPath: m_Name
