@@ -48,17 +48,6 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         gameInput.OnInteractAlternateAction += GameInputOnInteractAlternatieAction;
     }
 
-    private void GameInputOnInteractAlternatieAction(object sender, EventArgs e)
-    {
-        if (selectedCounter != null)
-        {
-            selectedCounter.InteractAlternate(this);
-            transform.LookAt(selectedCounter.transform);
-        }
-    }
-
-
-
     void Update()
     {
         HandleMovement();
@@ -67,13 +56,25 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void GameInputOnInteraction(object sender, EventArgs e)
     {
-          if (selectedCounter !=null)
+        if (!KitchenGameManager.Instance.IsGamePlaying()) { return; }
+
+        if (selectedCounter !=null)
           {
               selectedCounter.Interact(this);
               transform.LookAt(selectedCounter.transform);
         }
     }
 
+    private void GameInputOnInteractAlternatieAction(object sender, EventArgs e)
+    {
+        if (!KitchenGameManager.Instance.IsGamePlaying()) { return; }
+
+        if (selectedCounter != null)
+        {
+            selectedCounter.InteractAlternate(this);
+            transform.LookAt(selectedCounter.transform);
+        }
+    }
     private void HandleMovement()
     {
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
